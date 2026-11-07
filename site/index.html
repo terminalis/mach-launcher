@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" data-release="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mach Launcher: an Android TV launcher</title>
+  <meta name="description" content="Mach Launcher is a launcher for Android TV: a dock of favourites, every TV app, and what to watch next, on Home.">
+  <meta name="theme-color" content="#152331">
+  <meta name="color-scheme" content="dark">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mach Launcher">
+  <meta property="og:description" content="A dock of favourites, every TV app, and what to watch next, on Home.">
+  <meta property="og:url" content="https://terminalis.github.io/mach-launcher/">
+  <meta property="og:image" content="https://terminalis.github.io/mach-launcher/banner.png">
+  <meta property="og:image:width" content="320">
+  <meta property="og:image:height" content="180">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="preload" href="fonts/Inter-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="fonts/Inter-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+
+  <script>
+    // Applies the saved or system wallpaper before first paint.
+    (function () {
+      var root = document.documentElement;
+      var saved = null;
+      try { saved = localStorage.getItem('mach-site-wallpaper'); } catch (e) {}
+      if (saved !== 'day' && saved !== 'night') {
+        saved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
+      }
+      root.setAttribute('data-wallpaper', saved);
+      root.classList.add('js');
+    })();
+  </script>
+  <noscript>
+    <style>
+      html, body { height: auto; overflow: auto; }
+      .frame { height: auto; min-height: 100vh; }
+      .status-actions { display: none; }
+      .stage { order: 3; display: block; padding-top: calc(16 * var(--u)); }
+      .hero { display: block; }
+      .hero-item { opacity: 1; visibility: visible; margin-bottom: calc(40 * var(--u)); }
+    </style>
+  </noscript>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <div class="wallpaper" aria-hidden="true">
+    <img class="wall wall-day" alt="" decoding="async" loading="lazy"
+         src="wallpapers/clouds-by-day-1920.webp">
+    <img class="wall wall-night" alt="" decoding="async" loading="lazy"
+         src="wallpapers/clouds-by-night-1920.webp">
+    <div class="scrim"></div>
+  </div>
+
+  <div class="frame">
+    <header class="status-bar">
+      <div class="glass pill status-title">
+        <h1><strong>Mach</strong> Launcher</h1>
+      </div>
+      <div class="glass pill status-actions" role="group" aria-label="Wallpaper">
+        <button type="button" class="status-btn" data-wallpaper-choice="day" aria-pressed="false" aria-label="Day wallpaper">
+          <svg class="icon" aria-hidden="true"><use href="icons.svg#sun"></use></svg>
+        </button>
+        <button type="button" class="status-btn" data-wallpaper-choice="night" aria-pressed="false" aria-label="Night wallpaper">
+          <svg class="icon" aria-hidden="true"><use href="icons.svg#moon"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="stage">
+      <section class="recommendations" aria-label="Screenshots"></section>
+
+      <section class="hero" aria-live="polite" aria-atomic="true">
+        <article class="hero-item is-active" id="download" data-section="download">
+          <div class="hero-label">Android TV launcher</div>
+          <h2 class="hero-title">
+            <span data-when="none">Mach</span>
+            <span data-when="available">Mach v{{version}}</span>
+          </h2>
+          <p class="hero-description">A dock of favourites, every TV app, and what to watch next, on Home.</p>
+        </article>
+
+        <article class="hero-item" id="installation" data-section="installation">
+          <div class="hero-label">Installation</div>
+          <h2 class="hero-title">Install on Android TV 7.0+</h2>
+          <p class="hero-description">Download the APK, open it on your TV and allow unknown apps when asked. To make Mach your Home screen, follow its Settings → Home screen.</p>
+          <div class="hero-pills">
+            <a class="hero-pill"
+               href="https://github.com/terminalis/mach-launcher/releases" data-release-href="https://github.com/terminalis/mach-launcher/releases/latest/download/mach-launcher-universal-release.apk">
+              <svg class="icon" aria-hidden="true"><use href="icons.svg#download"></use></svg>
+              <span>Download APK</span>
+            </a>
+            <a class="hero-pill" target="_blank" rel="noopener"
+               href="https://github.com/terminalis/mach-launcher/releases" data-release-href="https://github.com/terminalis/mach-launcher/releases/latest">
+              <svg class="icon" aria-hidden="true"><use href="icons.svg#external"></use></svg>
+              <span>Other builds</span><span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="hero-item" id="features" data-section="features">
+          <div class="hero-label">Features</div>
+          <h2 class="hero-title">A dock, every app, and what's next</h2>
+          <p class="hero-description">Pin up to six favourites to a frosted dock, browse every TV app A to Z, and see titles from your streaming apps on Home, over day or night clouds.</p>
+        </article>
+
+        <article class="hero-item" id="permissions" data-section="permissions">
+          <div class="hero-label">Permissions</div>
+          <h2 class="hero-title">Only what it needs</h2>
+          <p class="hero-description">TV listings for recommendations, Photos for a custom wallpaper, Install unknown apps for updates, and Accessibility for the Home screen switch.</p>
+        </article>
+
+        <article class="hero-item" id="github" data-section="github">
+          <div class="hero-label">GitHub</div>
+          <h2 class="hero-title">Source on GitHub</h2>
+          <p class="hero-description">Code, issues and release notes for every version.</p>
+        </article>
+
+        <article class="hero-item" id="about" data-section="about">
+          <div class="hero-label">About</div>
+          <h2 class="hero-title">Free and open source</h2>
+          <p class="hero-description">GPL-3.0. Forked from Arc Launcher, which builds on LTvLauncher and FLauncher. Set in Inter.</p>
+          <div class="hero-pills">
+            <a class="hero-pill" target="_blank" rel="noopener" href="https://github.com/terminalis/mach-launcher/blob/main/LICENSE">
+              <svg class="icon" aria-hidden="true"><use href="icons.svg#external"></use></svg>
+              <span>View licence</span><span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <nav class="dock glass" aria-label="Sections">
+      <ul class="dock-row">
+        <li class="dock-slot">
+          <a class="tile" data-section="download"
+             href="https://github.com/terminalis/mach-launcher/releases" data-release-href="https://github.com/terminalis/mach-launcher/releases/latest/download/mach-launcher-universal-release.apk">
+            <svg class="icon tile-icon" aria-hidden="true"><use href="icons.svg#download"></use></svg>
+            <span class="tile-label">Download</span>
+            <span class="tile-caption" data-when="none">Coming soon</span>
+            <span class="tile-caption" data-when="available">v{{version}}</span>
+          </a>
+        </li>
+        <li class="dock-slot">
+          <a class="tile" data-section="installation" href="#installation">
+            <svg class="icon tile-icon" aria-hidden="true"><use href="icons.svg#tv"></use></svg>
+            <span class="tile-label">Installation</span>
+          </a>
+        </li>
+        <li class="dock-slot">
+          <a class="tile" data-section="features" href="#features">
+            <svg class="icon tile-icon" aria-hidden="true"><use href="icons.svg#sparkles"></use></svg>
+            <span class="tile-label">Features</span>
+          </a>
+        </li>
+        <li class="dock-slot">
+          <a class="tile" data-section="permissions" href="#permissions">
+            <svg class="icon tile-icon" aria-hidden="true"><use href="icons.svg#shield"></use></svg>
+            <span class="tile-label">Permissions</span>
+          </a>
+        </li>
+        <li class="dock-slot">
+          <a class="tile" data-section="github" target="_blank" rel="noopener" href="https://github.com/terminalis/mach-launcher">
+            <svg class="icon tile-icon" aria-hidden="true"><use href="icons.svg#github"></use></svg>
+            <span class="tile-label">GitHub</span>
+            <svg class="icon tile-external" aria-hidden="true"><use href="icons.svg#external"></use></svg>
+            <span class="visually-hidden"> (opens in a new tab)</span>
+          </a>
+        </li>
+        <li class="dock-slot">
+          <a class="tile" data-section="about" href="#about">
+            <svg class="icon tile-icon" aria-hidden="true"><use href="icons.svg#info"></use></svg>
+            <span class="tile-label">About</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</body>
+</html>

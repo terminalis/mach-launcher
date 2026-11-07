@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_button_service_description">Opens Mach Launcher when the Home button is pressed or the TV starts.</string>
+</resources>

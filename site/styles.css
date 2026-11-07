@@ -1,0 +1,696 @@
+/*
+ * Mach Launcher site.
+ * Every value below comes from the app's Flutter source; the widget it mirrors is named beside it.
+ * Sizes are written in reference pixels of Mach's 1280×720 logical layout on a 1080p TV, and
+ * multiplied by --u, which scales that layout to the browser window.
+ */
+
+@font-face {
+  font-family: "Inter";
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/Inter-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Inter";
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/Inter-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Inter";
+  font-weight: 800;
+  font-display: swap;
+  src: url("fonts/Inter-ExtraBold.ttf") format("truetype");
+}
+
+:root {
+  --u: clamp(0.75px, min(100vw / 1280, 100vh / 720), 1.5px);
+
+  /* home_palette.dart */
+  --ink-on-white: #1c1c1e;
+  --text-shadow: 0 calc(2 * var(--u)) calc(4 * var(--u)) rgb(0 0 0 / 0.54);
+
+  /* frosted_panel.dart */
+  --glass-fill: rgb(0 0 0 / 0.5);
+  --glass-fallback: rgb(21 35 49 / 0.85);
+  --glass-blur: calc(15 * var(--u));
+  --glass-radius: calc(24 * var(--u));
+  --glass-shadow: 0 0 calc(20 * var(--u)) calc(2 * var(--u)) rgb(0 0 0 / 0.3);
+  --glass-edge: linear-gradient(to bottom, #ffffff40 0%, #ffffff1a 40%, #ffffff0a 100%);
+
+  /* focus_zoom_tile.dart */
+  --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+  --focus-duration: 180ms;
+  --tile-zoom: 1.15;
+  --tile-shadow: 0 calc(14 * var(--u)) calc(28 * var(--u)) rgb(0 0 0 / 0.6);
+
+  /* home_layout.dart, home_screen.dart */
+  --section-pad: calc(24 * var(--u));
+  --card-pad-x: calc(12 * var(--u));
+  --card-pad-y: calc(9 * var(--u));
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overflow: hidden;
+  color: #fff;
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  /* wallpaper_service.dart kDarkGradient, shown while the photo loads or if it fails. */
+  background: #152331 linear-gradient(180deg, #152331, #000) fixed;
+}
+
+@media (max-height: 599px) and (min-width: 768px) {
+  html,
+  body {
+    height: auto;
+    overflow: auto;
+  }
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.icon {
+  display: block;
+  flex: none;
+}
+
+/* ---------- Wallpaper and scrim (home_background.dart, hero_backdrop_baker.dart) ---------- */
+
+.wallpaper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.wall {
+  position: absolute;
+  inset: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+html[data-wallpaper="day"] .wall-day,
+html[data-wallpaper="night"] .wall-night,
+html:not([data-wallpaper]) .wall-day {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-wallpaper]) .wall-day {
+    display: none;
+  }
+  html:not([data-wallpaper]) .wall-night {
+    display: block;
+  }
+}
+
+/* A wallpaper fading in over the current one (AnimatedSwitcher, 1500ms). */
+.wall.is-incoming {
+  display: block;
+  z-index: 1;
+  opacity: 0;
+}
+
+.wall.is-incoming.is-fading-in {
+  opacity: 1;
+  transition: opacity 1500ms ease-in-out;
+}
+
+/* _paintScrim: a fixed layer that never changes with sections or wallpapers. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(to right, #000000a6 0%, #00000052 35%, transparent 75%),
+    linear-gradient(to bottom, #00000059 0%, transparent 25%, #00000080 60%, #000000e0 100%);
+}
+
+/* ---------- Frame ---------- */
+
+.frame {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, calc(1280 * var(--u)));
+  height: 100vh;
+  height: 100dvh;
+  margin-inline: auto;
+}
+
+@media (max-height: 599px) and (min-width: 768px) {
+  .frame {
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
+/* ---------- Glass (frosted_panel.dart) ---------- */
+
+.glass {
+  position: relative;
+  border-radius: var(--glass-radius);
+  background: var(--glass-fallback);
+  box-shadow: var(--glass-shadow);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--glass-fill);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.8);
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.8);
+  }
+}
+
+/* _GlassOutlinePainter: a 1px edge fading from 25% to 4% white. */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--glass-edge);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+/* ---------- Status bar (status_bar.dart) ---------- */
+
+.status-bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12 * var(--u));
+  padding: calc(16 * var(--u)) var(--section-pad) 0;
+}
+
+.status-title {
+  padding: calc(10 * var(--u)) calc(18 * var(--u));
+}
+
+.status-title h1 {
+  font-size: calc(20 * var(--u));
+  line-height: 1.2;
+  letter-spacing: calc(0.15 * var(--u));
+  white-space: nowrap;
+  text-shadow: var(--text-shadow);
+}
+
+.status-title strong {
+  font-weight: 700;
+}
+
+.status-actions {
+  display: flex;
+  gap: calc(8 * var(--u));
+  padding: calc(4 * var(--u)) calc(8 * var(--u));
+}
+
+.status-btn {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: calc(4 * var(--u)) calc(6 * var(--u));
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 150ms var(--ease-out-cubic),
+    color 150ms var(--ease-out-cubic);
+}
+
+.status-btn .icon {
+  width: calc(20 * var(--u));
+  height: calc(20 * var(--u));
+  filter: drop-shadow(var(--text-shadow));
+}
+
+/* Selected wallpaper: a faint fill, so it never looks like focus. */
+.status-btn[aria-pressed="true"] {
+  background: rgb(255 255 255 / 0.16);
+}
+
+.status-btn:focus-visible,
+.status-btn:hover {
+  outline: none;
+  background: #fff;
+  color: var(--ink-on-white);
+  transform: scale(1.08);
+}
+
+.status-btn:focus-visible .icon,
+.status-btn:hover .icon {
+  filter: none;
+}
+
+.status-btn:active {
+  transform: scale(0.92);
+}
+
+/* ---------- Stage: the space above the dock ---------- */
+
+.stage {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 0;
+  /*
+   * The app leaves 16 + 10 px between hero and dock, which reads well across a room but cramped at
+   * arm's length once the focused tile zooms. 46 + the dock's 10 gives 56 reference px.
+   */
+  padding: 0 calc(var(--section-pad) + var(--card-pad-x)) calc(46 * var(--u));
+}
+
+/* Reserved for screenshots: hidden until it holds a card. */
+.recommendations:not(:has(.card)) {
+  display: none;
+}
+
+/* ---------- Hero text (recommendations_hero.dart) ---------- */
+
+.hero {
+  display: grid;
+}
+
+.hero-item {
+  grid-area: 1 / 1;
+  align-self: end;
+  min-width: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--focus-duration) var(--ease-out-cubic),
+    visibility 0s linear var(--focus-duration);
+}
+
+.hero-item:not(.is-active) {
+  pointer-events: none;
+}
+
+/*
+ * Old text fades out for 180ms, then the new text fades in for 180ms.
+ * The new text is visible (and its pills focusable) at once; only its opacity waits.
+ */
+.hero-item.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--focus-duration) var(--ease-out-cubic) var(--focus-duration);
+}
+
+.hero-label {
+  display: inline-block;
+  max-width: 100%;
+  padding: calc(4 * var(--u)) calc(10 * var(--u));
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: calc(6 * var(--u));
+  background: rgb(255 255 255 / 0.16);
+  font-size: calc(11 * var(--u));
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: calc(1.1 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-title {
+  margin-top: calc(10 * var(--u));
+  font-size: calc(34 * var(--u));
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: calc(-0.4 * var(--u));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 calc(2 * var(--u)) calc(10 * var(--u)) rgb(0 0 0 / 0.87);
+}
+
+html[data-release="none"] [data-when="available"],
+html[data-release="available"] [data-when="none"] {
+  display: none;
+}
+
+.hero-description {
+  max-width: calc(720 * var(--u));
+  margin-top: calc(6 * var(--u));
+  font-size: calc(14 * var(--u));
+  line-height: 1.35;
+  color: rgb(255 255 255 / 0.85);
+  text-shadow: 0 calc(1 * var(--u)) calc(6 * var(--u)) rgb(0 0 0 / 0.87);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.hero-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(20 * var(--u));
+  margin-top: calc(14 * var(--u));
+}
+
+/* _HeroWatchButton */
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+  height: calc(48 * var(--u));
+  padding: 0 calc(24 * var(--u));
+  border: 1px solid rgb(255 255 255 / 0.35);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.22);
+  box-shadow: 0 calc(2 * var(--u)) calc(4 * var(--u)) rgb(0 0 0 / 0.26);
+  font-size: calc(16 * var(--u));
+  font-weight: 700;
+  letter-spacing: calc(0.3 * var(--u));
+  white-space: nowrap;
+  transition:
+    transform var(--focus-duration) var(--ease-out-cubic),
+    background-color var(--focus-duration) var(--ease-out-cubic),
+    color var(--focus-duration) var(--ease-out-cubic),
+    box-shadow var(--focus-duration) var(--ease-out-cubic);
+}
+
+.hero-pill .icon {
+  width: calc(24 * var(--u));
+  height: calc(24 * var(--u));
+}
+
+.hero-pill:focus-visible,
+.hero-pill:hover {
+  outline: none;
+  border-color: transparent;
+  background: #fff;
+  color: rgb(0 0 0 / 0.87);
+  box-shadow: 0 calc(3 * var(--u)) calc(8 * var(--u)) rgb(0 0 0 / 0.38);
+}
+
+.hero-pill:active {
+  transform: scale(0.96);
+}
+
+/* ---------- Dock (dock_row.dart, focus_zoom_tile.dart, app_card.dart) ---------- */
+
+.dock {
+  flex: none;
+  margin: calc(10 * var(--u)) var(--section-pad) calc(16 * var(--u));
+  padding: calc(5 * var(--u)) 0;
+}
+
+.dock-row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dock-slot {
+  aspect-ratio: 16 / 9;
+  padding: var(--card-pad-y) var(--card-pad-x);
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(6 * var(--u));
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: calc(12 * var(--u));
+  background: rgb(255 255 255 / 0.04);
+  box-shadow: 0 calc(2 * var(--u)) calc(4 * var(--u)) rgb(0 0 0 / 0.25);
+  outline: none;
+  transition:
+    transform var(--focus-duration) var(--ease-out-cubic),
+    box-shadow var(--focus-duration) var(--ease-out-cubic),
+    background-color var(--focus-duration) var(--ease-out-cubic),
+    color var(--focus-duration) var(--ease-out-cubic);
+}
+
+/* Unfocused cards carry a 10% black overlay (0x1A000000). */
+.tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 0.1);
+  transition: opacity var(--focus-duration) ease-in-out;
+  pointer-events: none;
+}
+
+.tile-icon {
+  width: calc(34 * var(--u));
+  height: calc(34 * var(--u));
+}
+
+.tile-label {
+  font-size: calc(14 * var(--u));
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.tile-caption {
+  margin-top: calc(-3 * var(--u));
+  font-size: calc(12 * var(--u));
+  line-height: 1.2;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.tile-external {
+  position: absolute;
+  top: calc(8 * var(--u));
+  right: calc(8 * var(--u));
+  width: calc(12 * var(--u));
+  height: calc(12 * var(--u));
+  opacity: 0.8;
+}
+
+/* Selected while focus is elsewhere on the page. */
+.tile[aria-current="true"] {
+  background: rgb(255 255 255 / 0.16);
+}
+
+@media (hover: hover) {
+  .tile:hover {
+    transform: scale(var(--tile-zoom));
+    box-shadow: var(--tile-shadow);
+  }
+  .tile:hover::before {
+    opacity: 0;
+  }
+}
+
+/* Focused: zoom, deep shadow, and white with dark glyphs. */
+.tile.is-focused,
+html:not(.js) .tile:focus-visible {
+  transform: scale(var(--tile-zoom));
+  box-shadow: var(--tile-shadow);
+  background: #fff;
+  color: var(--ink-on-white);
+}
+
+.tile.is-focused::before,
+html:not(.js) .tile:focus-visible::before {
+  opacity: 0;
+}
+
+.tile:active,
+.tile.is-pressed {
+  transform: scale(0.9);
+}
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 767px) {
+  :root {
+    --u: 1px;
+    --tile-zoom: 1.08;
+    --section-pad: 12px;
+  }
+
+  .status-bar {
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+
+  .status-title {
+    padding: 9px 14px;
+  }
+
+  .status-title h1 {
+    font-size: 16px;
+  }
+
+  .stage {
+    padding-inline: calc(var(--section-pad) + 8px);
+  }
+
+  .hero-title {
+    font-size: 26px;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .hero-description {
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+  }
+
+  .hero-pills {
+    gap: 12px;
+  }
+
+  .hero-pill {
+    height: 44px;
+    padding: 0 18px;
+    font-size: 15px;
+  }
+
+  .hero-pill .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .dock {
+    margin-bottom: max(12px, env(safe-area-inset-bottom));
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .dock-row {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 8px;
+    padding: 10px 8px;
+    scrollbar-width: none;
+  }
+
+  .dock-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tile {
+    gap: 4px;
+  }
+
+  .tile-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Two tiles and about a third of the next. */
+  .dock-slot {
+    flex: 0 0 calc((100% - 8px) / 2.3);
+    padding: 6px 8px;
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 767px) and (max-height: 499px) {
+  html,
+  body {
+    height: auto;
+    overflow: auto;
+  }
+  .frame {
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .tile.is-focused,
+  .tile:active,
+  .tile.is-pressed,
+  .tile:hover {
+    transform: none;
+  }
+  .tile,
+  .tile::before,
+  .status-btn,
+  .hero-pill,
+  .hero-item,
+  .hero-item.is-active,
+  .wall.is-incoming.is-fading-in {
+    transition: none;
+  }
+  .status-btn:hover,
+  .status-btn:focus-visible,
+  .status-btn:active,
+  .hero-pill:active {
+    transform: none;
+  }
+}

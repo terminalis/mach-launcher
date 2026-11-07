@@ -1,0 +1,45 @@
+/*
+ * FLauncher
+ * Copyright (C) 2021  Étienne Fesser
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package io.github.terminalis.machlauncher
+
+private const val LONG_PRESS_MS = 500L
+
+class OkPress(
+    private val now: () -> Long,
+    private val onPress: () -> Unit,
+    private val onLongPress: () -> Unit,
+) {
+    private var downAt: Long? = null
+
+    fun down() {
+        val start = downAt
+        if (start == null) {
+            downAt = now()
+        } else if (now() - start >= LONG_PRESS_MS) {
+            downAt = null
+            onLongPress()
+        }
+    }
+
+    fun up() {
+        if (downAt == null) return
+        downAt = null
+        onPress()
+    }
+}
