@@ -385,11 +385,6 @@ html:not([data-wallpaper]) .wall-day {
   text-shadow: 0 calc(2 * var(--u)) calc(10 * var(--u)) rgb(0 0 0 / 0.87);
 }
 
-html[data-release="none"] [data-when="available"],
-html[data-release="available"] [data-when="none"] {
-  display: none;
-}
-
 .hero-description {
   max-width: calc(720 * var(--u));
   margin-top: calc(6 * var(--u));
@@ -511,14 +506,6 @@ html[data-release="available"] [data-when="none"] {
 .tile-label {
   font-size: calc(14 * var(--u));
   line-height: 1.2;
-  white-space: nowrap;
-}
-
-.tile-caption {
-  margin-top: calc(-3 * var(--u));
-  font-size: calc(12 * var(--u));
-  line-height: 1.2;
-  opacity: 0.7;
   white-space: nowrap;
 }
 
