@@ -4,6 +4,20 @@
 
 A launcher for Android TV: a dock of favourite apps, a grid of every TV app, and titles from your streaming apps on Home.
 
+## Screenshots
+
+<p>
+  <img src="site/screens/home-day.webp" width="49%" alt="Home over the Clouds by day background">
+  <img src="site/screens/home-night.webp" width="49%" alt="Home over the Clouds by night background">
+</p>
+<p>
+  <img src="site/screens/recommendations-row.webp" width="49%" alt="Recommendations shown as a row of cards">
+  <img src="site/screens/recommendations-hero.webp" width="49%" alt="Recommendations shown as the background">
+</p>
+<p>
+  <img src="site/screens/settings-panel.webp" width="49%" alt="The settings panel">
+</p>
+
 ## Features
 
 - **Dock:** up to six favourite apps on frosted glass, in the order you set. A "+" tile adds the next one.

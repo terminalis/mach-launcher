@@ -73,13 +73,60 @@
     </header>
 
     <main class="stage">
-      <section class="recommendations" aria-label="Screenshots"></section>
-
       <section class="hero" aria-live="polite" aria-atomic="true">
-        <article class="hero-item is-active" id="download" data-section="download">
-          <div class="hero-label">Android TV launcher</div>
-          <h2 class="hero-title">Mach</h2>
-          <p class="hero-description">A dock of favourites, every TV app, and what to watch next, on Home.</p>
+        <article class="hero-item is-active" id="screenshots" data-section="screenshots">
+          <ul class="cards" aria-label="Screenshots">
+            <li class="card-slot">
+              <a class="card" href="screens/home-day.webp" target="_blank" rel="noopener">
+                <img src="screens/home-day.webp" alt="Mach's Home over the Clouds by day background, with the status bar and a dock of Netflix, Apple TV, Spotify, Rakuten TV and Mach" width="1920" height="1080" decoding="async">
+                <span class="card-labels">
+                  <span class="card-title">Home</span>
+                  <span class="card-caption">Clouds by day</span>
+                </span>
+                <span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            </li>
+            <li class="card-slot">
+              <a class="card" href="screens/home-night.webp" target="_blank" rel="noopener">
+                <img src="screens/home-night.webp" alt="Mach's Home over the Clouds by night background, with the same dock" width="1920" height="1080" decoding="async">
+                <span class="card-labels">
+                  <span class="card-title">Home</span>
+                  <span class="card-caption">Clouds by night</span>
+                </span>
+                <span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            </li>
+            <li class="card-slot">
+              <a class="card" href="screens/recommendations-row.webp" target="_blank" rel="noopener">
+                <img src="screens/recommendations-row.webp" alt="Titles from Apple TV and Netflix as a row of cards above the dock" width="1920" height="1080" decoding="async">
+                <span class="card-labels">
+                  <span class="card-title">Recommendations</span>
+                  <span class="card-caption">Shown as a row</span>
+                </span>
+                <span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            </li>
+            <li class="card-slot">
+              <a class="card" href="screens/recommendations-hero.webp" target="_blank" rel="noopener">
+                <img src="screens/recommendations-hero.webp" alt="A Netflix title filling the screen behind Home, with its description and a Watch button" width="1920" height="1080" decoding="async">
+                <span class="card-labels">
+                  <span class="card-title">Recommendations</span>
+                  <span class="card-caption">Shown as the background</span>
+                </span>
+                <span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            </li>
+            <li class="card-slot">
+              <a class="card" href="screens/settings-panel.webp" target="_blank" rel="noopener">
+                <img src="screens/settings-panel.webp" alt="The settings panel open on the right of Home, listing Applications, Recommendations, Background, Home screen and About" width="1920" height="1080" decoding="async">
+                <span class="card-labels">
+                  <span class="card-title">Settings</span>
+                  <span class="card-caption">Interface panel</span>
+                </span>
+                <span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            </li>
+          </ul>
         </article>
 
         <article class="hero-item" id="installation" data-section="installation">
@@ -135,10 +182,9 @@
     <nav class="dock glass" aria-label="Sections">
       <ul class="dock-row">
         <li class="dock-slot">
-          <a class="tile" data-section="download"
-             href="https://github.com/terminalis/mach-launcher/releases/latest/download/mach-launcher-universal-release.apk">
-            <svg class="icon tile-icon" aria-hidden="true"><use href="icons.svg#download"></use></svg>
-            <span class="tile-label">Download</span>
+          <a class="tile" data-section="screenshots" href="#screenshots">
+            <svg class="icon tile-icon" aria-hidden="true"><use href="icons.svg#image"></use></svg>
+            <span class="tile-label">Screenshots</span>
           </a>
         </li>
         <li class="dock-slot">

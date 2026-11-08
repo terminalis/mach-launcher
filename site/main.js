@@ -22,7 +22,7 @@
 
   function select(section, options) {
     options = options || {};
-    if (sections.indexOf(section) === -1) section = 'download';
+    if (sections.indexOf(section) === -1) section = 'screenshots';
     if (section !== selected) {
       selected = section;
       tiles.forEach(function (tile) {
@@ -71,16 +71,21 @@
       // Safari does not focus links on click, so focus explicitly.
       if (document.activeElement !== tile) tile.focus({ preventScroll: true });
       select(tile.dataset.section, { updateUrl: true });
-      var isAction = tile.dataset.section === 'download' || tile.dataset.section === 'github';
-      if (!isAction) event.preventDefault();
+      if (tile.dataset.section !== 'github') event.preventDefault();
     });
+  });
+
+  document.addEventListener('focusin', function (event) {
+    var card = event.target.closest && event.target.closest('.card');
+    if (!card) return;
+    card.scrollIntoView({ block: 'nearest', inline: 'center', behavior: reducedMotion.matches ? 'auto' : 'smooth' });
   });
 
   // ---------- Keyboard map ----------
 
   function visiblePills() {
     var item = heroItems.filter(function (i) { return i.dataset.section === selected; })[0];
-    return item ? Array.prototype.slice.call(item.querySelectorAll('.hero-pill')) : [];
+    return item ? Array.prototype.slice.call(item.querySelectorAll('.hero-pill, .card')) : [];
   }
 
   function pressedStatusButton() {
@@ -108,7 +113,7 @@
     var isArrow = key === 'ArrowLeft' || key === 'ArrowRight' || key === 'ArrowUp' || key === 'ArrowDown';
 
     var tile = target.closest && target.closest('.tile');
-    var pill = target.closest && target.closest('.hero-pill');
+    var pill = target.closest && target.closest('.hero-pill, .card');
     var statusButton = target.closest && target.closest('.status-btn');
 
     // Nothing focused yet: the first arrow press focuses the selected tile.
@@ -260,6 +265,6 @@
 
   reflectWallpaper(currentWallpaper());
   // Draw the selected tile in its focused state without moving DOM focus.
-  select(sectionFromHash() || 'download');
+  select(sectionFromHash() || 'screenshots');
   if (!dock.contains(document.activeElement)) showFocusLook(tileFor(selected));
 })();
