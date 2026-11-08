@@ -443,9 +443,15 @@ html:not([data-wallpaper]) .wall-day {
 
 /* ---------- Screenshot cards (recommendations_row.dart) ---------- */
 
+.cards-row {
+  position: relative;
+  display: grid;
+  margin-inline: calc(-1 * (var(--section-pad) + var(--card-pad-x)));
+}
+
 .cards {
   display: flex;
-  margin: calc(-40 * var(--u)) calc(-1 * (var(--section-pad) + var(--card-pad-x)));
+  margin: calc(-40 * var(--u)) 0;
   padding: calc(40 * var(--u)) var(--section-pad);
   list-style: none;
   overflow-x: auto;
@@ -500,8 +506,8 @@ html:not([data-wallpaper]) .wall-day {
   display: flex;
   flex-direction: column;
   gap: calc(2 * var(--u));
-  padding: calc(16 * var(--u)) calc(8 * var(--u)) calc(8 * var(--u));
-  background: linear-gradient(to bottom, rgb(0 0 0 / 0), rgb(0 0 0 / 0.55));
+  padding: calc(28 * var(--u)) calc(8 * var(--u)) calc(8 * var(--u));
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0), rgb(0 0 0 / 0.85) 55%);
 }
 
 .card-title {
@@ -528,9 +534,6 @@ html:not([data-wallpaper]) .wall-day {
   opacity: 0;
 }
 
-.card:focus-visible .card-labels {
-  background: linear-gradient(to bottom, rgb(0 0 0 / 0), rgb(0 0 0 / 0.7));
-}
 
 @media (hover: hover) {
   .card:hover {
@@ -544,6 +547,111 @@ html:not([data-wallpaper]) .wall-day {
 
 .card:active {
   transform: scale(0.97);
+}
+
+.cards-scroll {
+  position: absolute;
+  top: 50%;
+  display: none;
+  place-items: center;
+  width: calc(44 * var(--u));
+  height: calc(44 * var(--u));
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    background-color 150ms var(--ease-out-cubic),
+    color 150ms var(--ease-out-cubic);
+}
+
+.cards-scroll[data-direction="-1"] {
+  left: calc(12 * var(--u));
+}
+
+.cards-scroll[data-direction="1"] {
+  right: calc(12 * var(--u));
+}
+
+.cards-scroll .icon {
+  width: calc(24 * var(--u));
+  height: calc(24 * var(--u));
+}
+
+.cards-scroll:hover {
+  background: #fff;
+  color: var(--ink-on-white);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cards-scroll {
+    display: grid;
+  }
+  .cards-scroll[hidden] {
+    display: none;
+  }
+}
+
+.viewer {
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: calc(76 * var(--u)) var(--section-pad);
+  border: 0;
+  background: transparent;
+  cursor: zoom-out;
+}
+
+.viewer[open] {
+  display: grid;
+  place-items: center;
+}
+
+.viewer::backdrop {
+  background: rgb(0 0 0 / 0.85);
+}
+
+.viewer img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 152 * var(--u));
+  max-height: calc(100dvh - 152 * var(--u));
+  border-radius: calc(12 * var(--u));
+  box-shadow: var(--tile-shadow);
+}
+
+.viewer-close {
+  position: fixed;
+  top: calc(16 * var(--u));
+  right: var(--section-pad);
+  display: grid;
+  place-items: center;
+  width: calc(44 * var(--u));
+  height: calc(44 * var(--u));
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.viewer-close .icon {
+  width: calc(24 * var(--u));
+  height: calc(24 * var(--u));
+}
+
+.viewer-close:focus-visible,
+.viewer-close:hover {
+  outline: none;
+  background: #fff;
+  color: var(--ink-on-white);
 }
 
 /* ---------- Dock (dock_row.dart, focus_zoom_tile.dart, app_card.dart) ---------- */
@@ -695,7 +803,7 @@ html:not(.js) .tile:focus-visible::before {
     gap: 12px;
   }
 
-  .cards {
+  .cards-row {
     margin-inline: calc(-1 * (var(--section-pad) + 8px));
   }
 

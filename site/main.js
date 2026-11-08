@@ -81,6 +81,43 @@
     card.scrollIntoView({ block: 'nearest', inline: 'center', behavior: reducedMotion.matches ? 'auto' : 'smooth' });
   });
 
+  var cardRow = document.querySelector('.cards');
+  var scrollButtons = Array.prototype.slice.call(document.querySelectorAll('.cards-scroll'));
+
+  function updateScrollButtons() {
+    var end = cardRow.scrollWidth - cardRow.clientWidth - 1;
+    scrollButtons.forEach(function (button) {
+      button.hidden = button.dataset.direction === '-1' ? cardRow.scrollLeft < 1 : cardRow.scrollLeft > end;
+    });
+  }
+
+  scrollButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var step = cardRow.querySelector('.card-slot').offsetWidth;
+      cardRow.scrollBy({ left: Number(button.dataset.direction) * step, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+    });
+  });
+
+  var viewer = document.querySelector('.viewer');
+  var viewerImage = viewer.querySelector('img');
+
+  Array.prototype.slice.call(document.querySelectorAll('.card')).forEach(function (card) {
+    card.addEventListener('click', function (event) {
+      event.preventDefault();
+      viewerImage.src = card.href;
+      viewerImage.alt = card.querySelector('img').alt;
+      viewer.showModal();
+    });
+  });
+
+  viewer.addEventListener('click', function () {
+    viewer.close();
+  });
+
+  cardRow.addEventListener('scroll', updateScrollButtons, { passive: true });
+  window.addEventListener('resize', updateScrollButtons);
+  updateScrollButtons();
+
   // ---------- Keyboard map ----------
 
   function visiblePills() {

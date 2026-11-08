@@ -75,58 +75,61 @@
     <main class="stage">
       <section class="hero" aria-live="polite" aria-atomic="true">
         <article class="hero-item is-active" id="screenshots" data-section="screenshots">
-          <ul class="cards" aria-label="Screenshots">
-            <li class="card-slot">
-              <a class="card" href="screens/home-day.webp" target="_blank" rel="noopener">
-                <img src="screens/home-day.webp" alt="Mach's Home over the Clouds by day background, with the status bar and a dock of Netflix, Apple TV, Spotify, Rakuten TV and Mach" width="1920" height="1080" decoding="async">
-                <span class="card-labels">
-                  <span class="card-title">Home</span>
-                  <span class="card-caption">Clouds by day</span>
-                </span>
-                <span class="visually-hidden"> (opens in a new tab)</span>
-              </a>
-            </li>
-            <li class="card-slot">
-              <a class="card" href="screens/home-night.webp" target="_blank" rel="noopener">
-                <img src="screens/home-night.webp" alt="Mach's Home over the Clouds by night background, with the same dock" width="1920" height="1080" decoding="async">
-                <span class="card-labels">
-                  <span class="card-title">Home</span>
-                  <span class="card-caption">Clouds by night</span>
-                </span>
-                <span class="visually-hidden"> (opens in a new tab)</span>
-              </a>
-            </li>
-            <li class="card-slot">
-              <a class="card" href="screens/recommendations-row.webp" target="_blank" rel="noopener">
-                <img src="screens/recommendations-row.webp" alt="Titles from Apple TV and Netflix as a row of cards above the dock" width="1920" height="1080" decoding="async">
-                <span class="card-labels">
-                  <span class="card-title">Recommendations</span>
-                  <span class="card-caption">Shown as a row</span>
-                </span>
-                <span class="visually-hidden"> (opens in a new tab)</span>
-              </a>
-            </li>
-            <li class="card-slot">
-              <a class="card" href="screens/recommendations-hero.webp" target="_blank" rel="noopener">
-                <img src="screens/recommendations-hero.webp" alt="A Netflix title filling the screen behind Home, with its description and a Watch button" width="1920" height="1080" decoding="async">
-                <span class="card-labels">
-                  <span class="card-title">Recommendations</span>
-                  <span class="card-caption">Shown as the background</span>
-                </span>
-                <span class="visually-hidden"> (opens in a new tab)</span>
-              </a>
-            </li>
-            <li class="card-slot">
-              <a class="card" href="screens/settings-panel.webp" target="_blank" rel="noopener">
-                <img src="screens/settings-panel.webp" alt="The settings panel open on the right of Home, listing Applications, Recommendations, Background, Home screen and About" width="1920" height="1080" decoding="async">
-                <span class="card-labels">
-                  <span class="card-title">Settings</span>
-                  <span class="card-caption">Interface panel</span>
-                </span>
-                <span class="visually-hidden"> (opens in a new tab)</span>
-              </a>
-            </li>
-          </ul>
+          <div class="cards-row">
+            <ul class="cards" aria-label="Screenshots">
+              <li class="card-slot">
+                <a class="card" href="screens/home-day.webp">
+                  <img src="screens/home-day.webp" alt="Mach's Home over the Clouds by day background, with the status bar and a dock of Netflix, Apple TV, Spotify, Rakuten TV and Mach" width="1920" height="1080" decoding="async">
+                  <span class="card-labels">
+                    <span class="card-title">Home</span>
+                    <span class="card-caption">Clouds by day</span>
+                  </span>
+                </a>
+              </li>
+              <li class="card-slot">
+                <a class="card" href="screens/home-night.webp">
+                  <img src="screens/home-night.webp" alt="Mach's Home over the Clouds by night background, with the same dock" width="1920" height="1080" decoding="async">
+                  <span class="card-labels">
+                    <span class="card-title">Home</span>
+                    <span class="card-caption">Clouds by night</span>
+                  </span>
+                </a>
+              </li>
+              <li class="card-slot">
+                <a class="card" href="screens/recommendations-row.webp">
+                  <img src="screens/recommendations-row.webp" alt="Titles from Apple TV and Netflix as a row of cards above the dock" width="1920" height="1080" decoding="async">
+                  <span class="card-labels">
+                    <span class="card-title">Recommendations</span>
+                    <span class="card-caption">Shown as a row</span>
+                  </span>
+                </a>
+              </li>
+              <li class="card-slot">
+                <a class="card" href="screens/recommendations-hero.webp">
+                  <img src="screens/recommendations-hero.webp" alt="A Netflix title filling the screen behind Home, with its description and a Watch button" width="1920" height="1080" decoding="async">
+                  <span class="card-labels">
+                    <span class="card-title">Recommendations</span>
+                    <span class="card-caption">Shown as the background</span>
+                  </span>
+                </a>
+              </li>
+              <li class="card-slot">
+                <a class="card" href="screens/settings-panel.webp">
+                  <img src="screens/settings-panel.webp" alt="The settings panel open on the right of Home, listing Applications, Recommendations, Background, Home screen and About" width="1920" height="1080" decoding="async">
+                  <span class="card-labels">
+                    <span class="card-title">Settings</span>
+                    <span class="card-caption">Interface panel</span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+            <button type="button" class="glass cards-scroll" data-direction="-1" tabindex="-1" aria-label="Scroll screenshots left">
+              <svg class="icon" aria-hidden="true"><use href="icons.svg#chevron-left"></use></svg>
+            </button>
+            <button type="button" class="glass cards-scroll" data-direction="1" tabindex="-1" aria-label="Scroll screenshots right">
+              <svg class="icon" aria-hidden="true"><use href="icons.svg#chevron-right"></use></svg>
+            </button>
+          </div>
         </article>
 
         <article class="hero-item" id="installation" data-section="installation">
@@ -178,6 +181,13 @@
         </article>
       </section>
     </main>
+
+    <dialog class="viewer" aria-label="Screenshot">
+      <img alt="">
+      <button type="button" class="glass viewer-close" aria-label="Close">
+        <svg class="icon" aria-hidden="true"><use href="icons.svg#x"></use></svg>
+      </button>
+    </dialog>
 
     <nav class="dock glass" aria-label="Sections">
       <ul class="dock-row">
