@@ -20,6 +20,12 @@ jobs:
       - name: Check the tag against the version name
         run: |
           grep -qF "versionName \"${GITHUB_REF_NAME}\"" app/build.gradle || { echo "Tag ${GITHUB_REF_NAME} differs from versionName in app/build.gradle"; exit 1; }
+      - name: Find the release notes for the version code
+        run: |
+          code=$(sed -n 's/^ *versionCode \([0-9]*\)$/\1/p' app/build.gradle)
+          notes="fastlane/metadata/android/en-US/changelogs/${code}.txt"
+          test -s "$notes" || { echo "$notes is missing or empty"; exit 1; }
+          echo "RELEASE_NOTES=$notes" >> "$GITHUB_ENV"
       - name: Decode signing key
         env:
           SIGNING_JKS_FILE_BASE64: ${{ secrets.SIGNING_JKS_FILE_BASE64 }}
@@ -37,4 +43,9 @@ jobs:
       - uses: softprops/action-gh-release@v3
         with:
           files: mach-launcher-universal-release.apk
+          body_path: ${{ env.RELEASE_NOTES }}
           fail_on_unmatched_files: true
+      - name: Add the release to the F-Droid repository
+        env:
+          GH_TOKEN: ${{ secrets.FDROID_REPO_TOKEN }}
+        run: gh workflow run publish.yml --repo terminalis/packages --ref main

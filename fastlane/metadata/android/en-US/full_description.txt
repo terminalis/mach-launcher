@@ -1,0 +1,17 @@
+Mach Launcher is a launcher for Android TV: a dock of favourite apps, a grid of every TV app, and titles from your streaming apps on Home.
+
+Dock: up to six favourite apps on frosted glass, in the order you set. A "+" tile adds the next one.
+
+Apps grid: every app with a TV entry, six across, A to Z until you move a tile. Phone-only apps are left out.
+
+Recommendations: titles from Android's Play Next list and from apps that publish TV channel rows. They show as a row of cards, or as a full-screen hero with the title's artwork behind Home. Each source has its own switch, and every source starts off.
+
+Backgrounds: a dark or light gradient; a bundled cloud photo by night, by day, or switching with the time of day; or a photo from the TV. The cloud photos are bundled for 1080p and 4K screens.
+
+Status bar: the date and clock on the left; the TV's inputs menu, Android's Settings and Mach's settings on the right.
+
+App panel: hold OK on a tile to move it, open it, add it to or remove it from the dock, hide it, open its app info or uninstall it.
+
+Home button: on many TVs the built-in launcher keeps the Home button even when another launcher is the default. Mach can take it over with an accessibility switch, which is only told which app has come to the front: it can't read the screen or see your key presses.
+
+Requires Android TV 7.0 or later.

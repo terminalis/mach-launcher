@@ -1,0 +1,1 @@
+Mach Launcher can now be installed and updated from the terminalis F-Droid repository. The app is unchanged from 1.0.0.
