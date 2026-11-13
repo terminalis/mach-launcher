@@ -48,4 +48,4 @@ jobs:
       - name: Add the release to the F-Droid repository
         env:
           GH_TOKEN: ${{ secrets.FDROID_REPO_TOKEN }}
-        run: gh workflow run publish.yml --repo terminalis/packages --ref main
+        run: gh workflow run publish.yml --repo terminalis/terminalis.github.io --ref main

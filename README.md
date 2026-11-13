@@ -33,7 +33,7 @@ Android TV 7.0 or later.
 
 Download `mach-launcher-universal-release.apk` from [Releases](https://github.com/terminalis/mach-launcher/releases/latest) and install it on the TV.
 
-Or add the terminalis F-Droid repository to an F-Droid client, which then installs Mach and its updates. [terminalis/packages](https://github.com/terminalis/packages#android) has its address.
+Or add the terminalis F-Droid repository to an F-Droid client, which then installs Mach and its updates. [terminalis.github.io](https://terminalis.github.io/#fdroid) has its address.
 
 Mach appears in the TV's app list. On devices that offer a choice of Home app, it can be chosen there.
 
